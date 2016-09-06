@@ -1,9 +1,6 @@
 import Exponent from 'exponent';
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  View
-} from 'react-native';
+import { AppRegistry, View } from 'react-native';
 import TaskList from "./components/TaskList";
 
 class Todo extends Component {
@@ -14,13 +11,16 @@ class Todo extends Component {
         { task : "Learn React Native" },
         { task : "Learn Redux" }
       ]
-
     };
+  }
+
+  handlePress() {
+    console.log("press handled");
   }
 
   render() {
     return (
-      <TaskList todos={this.state.todos}/>
+      <TaskList todos={this.state.todos} handlePress={this.handlePress}/>
     );
   }
 }
