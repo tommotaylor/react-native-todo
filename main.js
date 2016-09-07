@@ -32,8 +32,16 @@ class Todo extends Component {
     this.nav.pop();
   }
 
+  onDone(todo) {
+    console.log("done pressed on: " + todo.task);
+    const filteredTodos = this.state.todos.filter((filterTodo) => {
+      return filterTodo !== todo;
+    });
+    this.setState({ todos: filteredTodos });
+  }
+
   configureScene() {
-    return Navigator.SceneConfigs.FloatFromBottom
+    return Navigator.SceneConfigs.FloatFromBottom;
   }
 
   renderScene(route, nav) {
@@ -50,6 +58,7 @@ class Todo extends Component {
           <TaskList
             todos={this.state.todos}
             handlePress={this.handlePress.bind(this)}
+            onDone={this.onDone.bind(this)}
           />
         );
     }
