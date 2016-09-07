@@ -1,7 +1,8 @@
 import Exponent from 'exponent';
 import React, { Component } from 'react';
-import { AppRegistry, View } from 'react-native';
+import { AppRegistry, View, Navigator, Text } from 'react-native';
 import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
 
 class Todo extends Component {
   constructor(props, context) {
@@ -15,12 +16,60 @@ class Todo extends Component {
   }
 
   handlePress() {
-    console.log("press handled");
+    this.nav.push({
+      name: 'todoform',
+    });
+  }
+
+  onCancel() {
+    this.nav.pop();
+  }
+
+  onAdd(task) {
+    console.log("added: " + task );
+    this.state.todos.push({ task });
+    this.setState({ todos: this.state.todos });
+    this.nav.pop();
+  }
+
+  configureScene() {
+    return Navigator.SceneConfigs.FloatFromBottom
+  }
+
+  renderScene(route, nav) {
+    switch (route.name) {
+      case 'todoform':
+        return (
+          <TaskForm
+            onCancel={this.onCancel.bind(this)}
+            onAdd={this.onAdd.bind(this)}
+          />
+        );
+      default:
+        return (
+          <TaskList
+            todos={this.state.todos}
+            handlePress={this.handlePress.bind(this)}
+          />
+        );
+    }
   }
 
   render() {
+    const routes = [
+      {name: 'tasklist', index: 0},
+      {name: 'todoform', index: 1}
+    ];
+
     return (
-      <TaskList todos={this.state.todos} handlePress={this.handlePress}/>
+      <Navigator
+        configureScene={this.configureScene}
+        initialRoute={routes[0]}
+        ref={((nav) => {
+          this.nav = nav;
+        })}
+        renderScene={this.renderScene.bind(this)}
+      />
     );
   }
 }

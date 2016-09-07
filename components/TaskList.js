@@ -36,6 +36,11 @@ class TaskList extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const dataSource = this.state.dataSource.cloneWithRows(nextProps.todos);
+    this.setState({ dataSource });
+  }
+
   renderRow(todo) {
     return (
       <TaskRow todo={todo} />
@@ -45,8 +50,13 @@ class TaskList extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)} />
-        <TouchableHighlight onPress={this.props.handlePress.bind(this)} style={styles.button}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow.bind(this)}
+        />
+        <TouchableHighlight
+          onPress={this.props.handlePress} style={styles.button}
+        >
           <Text style={styles.buttonText}>
             Add Todo
           </Text>
